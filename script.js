@@ -1,3 +1,7 @@
+// TODO Glue-code
+// TODO Test
+// TODO Lägg till ställningsräknare
+
 const X_CLASS = "x";
 const CIRCLE_CLASS = "circle";
 const WINNING_COMBINATIONS = [
@@ -13,6 +17,7 @@ const WINNING_COMBINATIONS = [
 const cellElements = document.querySelectorAll("[data-cell]"); // skapar en lista av "data-cell"
 const board = document.getElementById("board");
 const winningMessageElement = document.getElementById("winningMessage");
+const restartButton = document.getElementById("restartButton");
 const winningMessageTextElement = document.querySelector(
   "[data-winning-message-text]"
 );
@@ -36,9 +41,12 @@ function handleClick(e) {
   placeMark(cell, currentClass);
   if (checkWin(currentClass)) {
     endGame(false);
+  } else if (isDraw()) {
+    endGame(true);
+  } else {
+    swapTurns();
+    setBoardHoverClass();
   }
-  swapTurns();
-  setBoardHoverClass();
 }
 
 function endGame(draw) {
@@ -48,6 +56,15 @@ function endGame(draw) {
     winningMessageTextElement.innerText = `${circleTurn ? "O" : "X"} vinner!`;
   }
   winningMessageElement.classList.add("show");
+}
+
+function isDraw() {
+  return [...cellElements].every((cell) => {
+    // destrukturera cellElements till en array
+    return (
+      cell.classList.contains(X_CLASS) || cell.classList.contains(CIRCLE_CLASS)
+    );
+  });
 }
 
 function placeMark(cell, currentClass) {
