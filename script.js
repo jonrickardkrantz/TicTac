@@ -12,6 +12,10 @@ const WINNING_COMBINATIONS = [
 ];
 const cellElements = document.querySelectorAll("[data-cell]"); // skapar en lista av "data-cell"
 const board = document.getElementById("board");
+const winningMessageElement = document.getElementById("winningMessage");
+const winningMessageTextElement = document.querySelector(
+  "[data-winning-message-text]"
+);
 let circleTurn;
 
 startGame();
@@ -31,10 +35,19 @@ function handleClick(e) {
   const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
   placeMark(cell, currentClass);
   if (checkWin(currentClass)) {
-    console.log("Winner");
+    endGame(false);
   }
   swapTurns();
   setBoardHoverClass();
+}
+
+function endGame(draw) {
+  if (draw) {
+    winningMessageTextElement.innerText = "Oavgjort!";
+  } else {
+    winningMessageTextElement.innerText = `${circleTurn ? "O" : "X"} vinner!`;
+  }
+  winningMessageElement.classList.add("show");
 }
 
 function placeMark(cell, currentClass) {
@@ -54,7 +67,7 @@ function setBoardHoverClass() {
     board.classList.add(X_CLASS);
   }
 }
-
+// funktionen förklaras 34.00 min i videon
 function checkWin(currentClass) {
   return WINNING_COMBINATIONS.some(function (combination) {
     return combination.every(function (index) {
