@@ -15,6 +15,7 @@ const WINNING_COMBINATIONS = [
   [2, 4, 6],
 ];
 const cellElements = document.querySelectorAll("[data-cell]"); // skapar en array av "data-cell"
+const cellArray = Array.from(cellElements);
 const board = document.getElementById("board");
 const winningMessageElement = document.getElementById("winningMessage");
 const restartButton = document.getElementById("restartButton");
@@ -27,7 +28,7 @@ let circleTurn;
 randomizeStartplayer();
 
 function randomizeStartplayer() {
-  cellElements.forEach(function (cell) {
+  cellArray.forEach(function (cell) {
     // en loop
     // nedan startar om efter restartButton
     cell.classList.remove(X_CLASS);
@@ -49,7 +50,7 @@ function randomizeStartplayer() {
 
 function AIPlays() {
   randomCell = Math.floor(Math.random() * 8);
-  while (cellElements[randomCell] === "") {
+  while (cellArray[randomCell] === "") {
     randomCell = Math.floor(Math.random() * 8);
   }
   let currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
@@ -60,7 +61,7 @@ restartButton.addEventListener("click", randomizeStartplayer);
 
 function startGame() {
   circleTurn = false;
-  cellElements.forEach(function (cell) {
+  cellArray.forEach(function (cell) {
     cell.addEventListener("click", handleClick, { once: true }); // vid "click" gå till metoden "handleClick"
   });
 }
@@ -94,7 +95,7 @@ function endGame(draw) {
 }
 
 function isDraw() {
-  return [...cellElements].every(function (cell) {
+  return cellArray.every(function (cell) {
     // ... destruererar cellElements till en array
     return (
       cell.classList.contains(X_CLASS) || cell.classList.contains(CIRCLE_CLASS)
@@ -119,7 +120,7 @@ function setBoardHoverClass() {
 function checkWin(currentClass) {
   return WINNING_COMBINATIONS.some(function (combination) {
     return combination.every(function (index) {
-      return cellElements[index].classList.contains(currentClass);
+      return cellArray[index].classList.contains(currentClass);
     });
   });
 }
