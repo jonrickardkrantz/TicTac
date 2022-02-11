@@ -15,7 +15,8 @@ const WINNING_COMBINATIONS = [
   [2, 4, 6],
 ];
 const cellElements = document.querySelectorAll("[data-cell]"); // skapar en array av "data-cell"
-const cellArray = Array.from(cellElements);
+// const cellArray = Array.from(cellElements);
+// var cellArray = new Array(9);
 const board = document.getElementById("board");
 const winningMessageElement = document.getElementById("winningMessage");
 const restartButton = document.getElementById("restartButton");
@@ -28,7 +29,7 @@ let circleTurn;
 randomizeStartplayer();
 
 function randomizeStartplayer() {
-  cellArray.forEach(function (cell) {
+  cellElements.forEach(function (cell) {
     // en loop
     // nedan startar om efter restartButton
     cell.classList.remove(X_CLASS);
@@ -48,9 +49,14 @@ function randomizeStartplayer() {
   }
 }
 
+// randomCell = Math.floor(Math.random() * 8);
+// let botBox = document.getElementById(randomCell);
+// while (botBox.innerHTML == null) {
+
 function AIPlays() {
   randomCell = Math.floor(Math.random() * 8);
-  while (cellArray[randomCell] === "") {
+  while (cellElements[randomCell] === "") {
+    // har en tom array, men den går inte accessa
     randomCell = Math.floor(Math.random() * 8);
   }
   let currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
@@ -61,7 +67,7 @@ restartButton.addEventListener("click", randomizeStartplayer);
 
 function startGame() {
   circleTurn = false;
-  cellArray.forEach(function (cell) {
+  cellElements.forEach(function (cell) {
     cell.addEventListener("click", handleClick, { once: true }); // vid "click" gå till metoden "handleClick"
   });
 }
@@ -95,8 +101,7 @@ function endGame(draw) {
 }
 
 function isDraw() {
-  return cellArray.every(function (cell) {
-    // ... destruererar cellElements till en array
+  return cellElements.every(function (cell) {
     return (
       cell.classList.contains(X_CLASS) || cell.classList.contains(CIRCLE_CLASS)
     );
@@ -120,7 +125,7 @@ function setBoardHoverClass() {
 function checkWin(currentClass) {
   return WINNING_COMBINATIONS.some(function (combination) {
     return combination.every(function (index) {
-      return cellArray[index].classList.contains(currentClass);
+      return cellElements[index].classList.contains(currentClass);
     });
   });
 }
