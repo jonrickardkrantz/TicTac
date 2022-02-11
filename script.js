@@ -38,7 +38,7 @@ function randomizeStartplayer() {
   });
 
   var randomNumberBetween0and2 = 1;
-  // var randomNumberBetween0and2 = Math.floor(Math.random() * 2);
+  // var randomNumberBetween0and2 = Math.floor(Math.random() * 2); original, den ovan startar alltid AI
   if (randomNumberBetween0and2 == 1) {
     circleTurn = true;
     AIPlays();
@@ -49,7 +49,7 @@ function randomizeStartplayer() {
 
 function AIPlays() {
   randomCell = Math.floor(Math.random() * 8);
-  while (cellElements(randomCell).hasOwnProperty) {
+  while (cellElements[randomCell] === "") {
     randomCell = Math.floor(Math.random() * 8);
   }
   let currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
