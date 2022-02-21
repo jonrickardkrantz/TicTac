@@ -15,8 +15,6 @@ const WINNING_COMBINATIONS = [
   [2, 4, 6],
 ];
 const cellElements = document.querySelectorAll("[data-cell]"); // skapar en array av "data-cell"
-// const cellArray = Array.from(cellElements);
-// var cellArray = new Array(9);
 const board = document.getElementById("board");
 const winningMessageElement = document.getElementById("winningMessage");
 const restartButton = document.getElementById("restartButton");
@@ -75,7 +73,9 @@ function handleClick(e) {
   // "e" är eventet som sker vid "click" i addEventListener
   const cell = e.target; // cellen är den vi klickade på (e.target)
   let currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
-  placeMark(cell, currentClass);
+  if (cell.innerHTML === "") {
+    placeMark(cell, currentClass);
+  }
 }
 
 function placeMarkForAI(cell, currentClass) {
@@ -105,12 +105,14 @@ function placeMark(cell, currentClass) {
 }
 
 function endGame(draw) {
-  if (draw) {
-    winningMessageTextElement.innerText = "Oavgjort!";
-  } else {
-    winningMessageTextElement.innerText = `${circleTurn ? "O" : "X"} vinner!`;
-  }
-  winningMessageElement.classList.add("show");
+  setTimeout(function () {
+    if (draw) {
+      winningMessageTextElement.innerText = "Oavgjort!";
+    } else {
+      winningMessageTextElement.innerText = `${circleTurn ? "O" : "X"} vinner!`;
+    }
+    winningMessageElement.classList.add("show");
+  }, 1000);
 }
 
 function isDraw() {
@@ -134,7 +136,6 @@ function setBoardHoverClass() {
     board.classList.add(X_CLASS);
   }
 }
-// funktionen förklaras 34.00 min i videon
 function checkWin(currentClass) {
   return WINNING_COMBINATIONS.some(function (combination) {
     return combination.every(function (index) {
