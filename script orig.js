@@ -15,8 +15,6 @@ const WINNING_COMBINATIONS = [
   [2, 4, 6],
 ];
 const cellElements = document.querySelectorAll("[data-cell]"); // skapar en array av "data-cell"
-// const cellArray = Array.from(cellElements);
-// var cellArray = new Array(9);
 const board = document.getElementById("board");
 const winningMessageElement = document.getElementById("winningMessage");
 const restartButton = document.getElementById("restartButton");
@@ -26,13 +24,15 @@ const winningMessageTextElement = document.querySelector(
 
 let circleTurn;
 
-restartButton.addEventListener("click", startGame);
-
 startGame();
+
+restartButton.addEventListener("click", startGame);
 
 function startGame() {
   circleTurn = false;
   cellElements.forEach(function (cell) {
+    // en loop
+    // nedan startar om efter restartButton
     cell.classList.remove(X_CLASS);
     cell.classList.remove(CIRCLE_CLASS);
     cell.removeEventListener("click", handleClick);
@@ -40,46 +40,13 @@ function startGame() {
   });
   setBoardHoverClass();
   winningMessageElement.classList.remove("show");
-  var randomNumberBetween0and2 = 1;
-  // var randomNumberBetween0and2 = Math.floor(Math.random() * 2); original, den ovan startar alltid AI
-  if (randomNumberBetween0and2 == 1) {
-    circleTurn = true;
-    AIPlays();
-  } else {
-    handleClick();
-  }
-}
-
-function AIPlays() {
-  randomCell = Math.floor(Math.random() * 8);
-  while (cellElements[randomCell].innerHTML !== "") {
-    randomCell = Math.floor(Math.random() * 8);
-  }
-  let currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
-  placeMarkForAI(randomCell, currentClass);
-}
-
-function placeMarkForAI(cell, currentClass) {
-  cellElements[cell].classList.add(currentClass); // skriver in currentClass (tex X_CLASS som är "x") på div som är klickad på. Och då används css för att skapa ett X. Jag har en array (cellElements), jag har en indexplats i arrayen (cell)
-  if (checkWin(currentClass)) {
-    endGame(false);
-  } else if (isDraw()) {
-    endGame(true);
-  } else {
-    swapTurns();
-    setBoardHoverClass();
-  }
 }
 
 function handleClick(e) {
   // "e" är eventet som sker vid "click" i addEventListener
   const cell = e.target; // cellen är den vi klickade på (e.target)
-  let currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
+  const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
   placeMark(cell, currentClass);
-}
-
-function placeMark(cell, currentClass) {
-  cellElements[cell].classList.add(currentClass); // skriver in currentClass (tex X_CLASS som är "x") på div som är klickad på. Och då används css för att skapa ett X.
   if (checkWin(currentClass)) {
     endGame(false);
   } else if (isDraw()) {
@@ -101,10 +68,15 @@ function endGame(draw) {
 
 function isDraw() {
   return [...cellElements].every(function (cell) {
+    // ... destruererar cellElements till en array
     return (
       cell.classList.contains(X_CLASS) || cell.classList.contains(CIRCLE_CLASS)
     );
   });
+}
+
+function placeMark(cell, currentClass) {
+  cell.classList.add(currentClass); // skriver in currentClass (tex X_CLASS som är "x") på div som är klickad på. Och då används css för att skapa ett X.
 }
 
 function swapTurns() {
