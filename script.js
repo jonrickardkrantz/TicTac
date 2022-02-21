@@ -33,10 +33,10 @@ startGame();
 function startGame() {
   circleTurn = false;
   cellElements.forEach(function (cell) {
+    // Tömmer spelplan
     cell.classList.remove(X_CLASS);
     cell.classList.remove(CIRCLE_CLASS);
     cell.removeEventListener("click", handleClick);
-    cell.addEventListener("click", handleClick, { once: true }); // vid "click" gå till metoden "handleClick"
   });
   setBoardHoverClass();
   winningMessageElement.classList.remove("show");
@@ -44,9 +44,21 @@ function startGame() {
   // var randomNumberBetween0and2 = Math.floor(Math.random() * 2); original, den ovan startar alltid AI
   if (randomNumberBetween0and2 == 1) {
     circleTurn = true;
+  } else {
+    circleTurn = false;
+  }
+  makeMove();
+}
+
+function makeMove() {
+  if (circleTurn == true) {
     AIPlays();
   } else {
-    handleClick();
+    cellElements.forEach(function (cell) {
+      // en loop
+      // nedan startar om efter restartButton
+      cell.addEventListener("click", handleClick, { once: true }); // vid "click" gå till metoden "handleClick"
+    });
   }
 }
 
@@ -59,6 +71,13 @@ function AIPlays() {
   placeMarkForAI(randomCell, currentClass);
 }
 
+function handleClick(e) {
+  // "e" är eventet som sker vid "click" i addEventListener
+  const cell = e.target; // cellen är den vi klickade på (e.target)
+  let currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
+  placeMark(cell, currentClass);
+}
+
 function placeMarkForAI(cell, currentClass) {
   cellElements[cell].classList.add(currentClass); // skriver in currentClass (tex X_CLASS som är "x") på div som är klickad på. Och då används css för att skapa ett X. Jag har en array (cellElements), jag har en indexplats i arrayen (cell)
   if (checkWin(currentClass)) {
@@ -68,18 +87,12 @@ function placeMarkForAI(cell, currentClass) {
   } else {
     swapTurns();
     setBoardHoverClass();
+    makeMove();
   }
 }
 
-function handleClick(e) {
-  // "e" är eventet som sker vid "click" i addEventListener
-  const cell = e.target; // cellen är den vi klickade på (e.target)
-  let currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
-  placeMark(cell, currentClass);
-}
-
 function placeMark(cell, currentClass) {
-  cellElements[cell].classList.add(currentClass); // skriver in currentClass (tex X_CLASS som är "x") på div som är klickad på. Och då används css för att skapa ett X.
+  cell.classList.add(currentClass); // skriver in currentClass (tex X_CLASS som är "x") på div som är klickad på. Och då används css för att skapa ett X.
   if (checkWin(currentClass)) {
     endGame(false);
   } else if (isDraw()) {
@@ -87,6 +100,7 @@ function placeMark(cell, currentClass) {
   } else {
     swapTurns();
     setBoardHoverClass();
+    makeMove();
   }
 }
 
