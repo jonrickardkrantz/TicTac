@@ -2,7 +2,7 @@
 // TODO Test
 // TODO Lägg till ställningsräknare
 
-import { cellElements } from "./array";
+// import { cellElements } from "./array";
 
 const X_CLASS = "x";
 const CIRCLE_CLASS = "circle";
