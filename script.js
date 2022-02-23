@@ -62,7 +62,10 @@ function makeMove() {
 
 function AIPlays() {
   randomCell = Math.floor(Math.random() * 8);
-  while (cellElements[randomCell].innerHTML !== "") {
+  while (
+    cellElements[randomCell].classList.contains("circle") ||
+    cellElements[randomCell].classList.contains("x")
+  ) {
     randomCell = Math.floor(Math.random() * 8);
   }
   let currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
@@ -73,7 +76,13 @@ function handleClick(e) {
   // "e" är eventet som sker vid "click" i addEventListener
   const cell = e.target; // cellen är den vi klickade på (e.target)
   let currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
-  if (cell.innerHTML === "") {
+  if (
+    //TODO Den buggar ur här, har ändrat till if-sats
+    cellElements[cell].classlist.contains("circle") ||
+    cellElements[cell].classlist.contains("x")
+  ) {
+    handleClick();
+  } else {
     placeMark(cell, currentClass);
   }
 }
