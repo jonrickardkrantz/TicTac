@@ -76,11 +76,7 @@ function handleClick(e) {
   // "e" är eventet som sker vid "click" i addEventListener
   const cell = e.target; // cellen är den vi klickade på (e.target)
   let currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS; // om currentClass är circleTurn return CIRCLE-CLASS, annars X_CLASS
-  if (
-    //TODO Den buggar ur här, har ändrat till if-sats
-    cellElements[cell].classlist.contains("circle") ||
-    cellElements[cell].classlist.contains("x")
-  ) {
+  if (cell.classList.contains("circle") || cell.classList.contains("x")) {
     handleClick();
   } else {
     placeMark(cell, currentClass);
